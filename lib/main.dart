@@ -1,9 +1,12 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-void main() {
 
-  Firestore.instance.collection("teste").document("teste").setData({"teste" : "teste"});
-  runApp(MyApp());
+void main() {
+  FirebaseAnalytics analytics = FirebaseAnalytics();
+  runApp(MaterialApp(
+      home: MyApp(),
+      navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)]));
 }
 
 class MyApp extends StatefulWidget {
