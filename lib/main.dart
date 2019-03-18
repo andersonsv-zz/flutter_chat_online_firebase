@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -65,6 +66,8 @@ class TextComposer extends StatefulWidget {
 }
 
 class _TextComposerState extends State<TextComposer> {
+  bool _isComposing = false;
+
   @override
   Widget build(BuildContext context) {
     return IconTheme(
@@ -78,17 +81,54 @@ class _TextComposerState extends State<TextComposer> {
         child: Row(
           children: <Widget>[
             Container(
-              child: IconButton(icon: Icon(Icons.photo_camera),
-                  onPressed: () {}),
+              child:
+                  IconButton(icon: Icon(Icons.photo_camera), onPressed: () {}),
             ),
             Expanded(
               child: TextField(
-                decoration: InputDecoration.collapsed(hintText: "Enviar mensagem"),
+                decoration:
+                    InputDecoration.collapsed(hintText: "Enviar mensagem"),
+                onChanged: (text) {
+                  setState(() {
+                    _isComposing = text.length > 0;
+                  });
+                },
               ),
-            )
+            ),
+            Container(
+                margin: const EdgeInsets.symmetric(horizontal: 4),
+                child: Theme.of(context).platform == TargetPlatform.iOS
+                    ? CupertinoButton(
+                        child: Text("Enviar"),
+                        onPressed: _isComposing ? () {} : null,
+                      )
+                    : IconButton(
+                        icon: Icon(Icons.send),
+                        onPressed: _isComposing ? () {} : null,
+                      ))
           ],
         ),
       ),
     );
   }
 }
+
+class ChatMessage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      child: Row(
+        children: <Widget>[
+          Container(
+            margin: const EdgeInsets.only(right: 10),
+            child: CircleAvatar(
+              backgroundImage: NetworkImage("https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwiatcDWg4zhAhV7GLkGHcyMCmQQjRx6BAgBEAU&url=https%3A%2F%2Ficonscout.com%2Ficon%2Favatar-372&psig=AOvVaw1HXw8m6xrh4_t93tSp-EB5&ust=1553010116920802") ,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
